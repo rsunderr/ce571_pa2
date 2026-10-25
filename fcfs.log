@@ -1,0 +1,13 @@
+STARTING fcfs
+Dispatching process 1, workload = 100000, response time = 0.000 us
+Dispatching process 2, workload = 50000, response time = 1207419.000 us
+Dispatching process 3, workload = 25000, response time = 1527734.000 us
+Dispatching process 4, workload = 10000, response time = 1614697.000 us
+
+FCFS response times:
+Process 1, workload = 100000: 0.000 microseconds
+Process 2, workload = 50000: 1207419.000 microseconds
+Process 3, workload = 25000: 1527734.000 microseconds
+Process 4, workload = 10000: 1614697.000 microseconds
+Average response time: 1087462.500 microseconds
+FINISHED fcfs

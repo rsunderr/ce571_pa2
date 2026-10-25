@@ -150,12 +150,9 @@ int main(int argc, char const *argv[])
     struct timespec ready_time;
     struct timespec dispatch_time;
 
-    /*
-    * All four processes have been created and stopped.
-    * Record when they are ready for scheduling.
-    */
     clock_gettime(CLOCK_MONOTONIC, &ready_time);
 
+    // schedule all 4 procs w/ sjf
     while (completed < 4) {
         int shortest = -1;
         int status;
@@ -186,7 +183,6 @@ int main(int argc, char const *argv[])
     }
 
     double average_response_time = total_response_time / 4.0;
-
     log_printf(log, "\nSJF response times:\n");
 
     for (int i = 0; i < 4; i++) {
