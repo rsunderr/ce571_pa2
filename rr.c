@@ -162,9 +162,11 @@ int main(int argc, char const *argv[])
 			// log if not already recorded
 			if (response_recorded[0] == 0) {
 				clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
-				response_time[0] = (dispatch_time.tv_sec - ready_time.tv_sec) * 1000000.0 + (dispatch_time.tv_nsec - ready_time.tv_nsec) / 1000.0;
+				double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
+				double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
+				response_time[0] = seconds * 1000000.0 + nanoseconds / 1000.0;
 				response_recorded[0] = 1;
-				log_printf(log, "First dispatch: process 1, workload = %d, " "response time = %.3f us\n", workloads[0], response_time[0]);
+				log_printf(log, "First dispatch: process 1, workload = %d, response time = %.3f us\n", workloads[0], response_time[0]);
 			}
 
 			kill(pid1, SIGCONT);
@@ -176,9 +178,11 @@ int main(int argc, char const *argv[])
 			// log if not already recorded
 			if (response_recorded[1] == 0) {
 				clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
-				response_time[1] = (dispatch_time.tv_sec - ready_time.tv_sec) * 1000000.0 + (dispatch_time.tv_nsec - ready_time.tv_nsec) / 1000.0;
+				double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
+				double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
+				response_time[1] = seconds * 1000000.0 + nanoseconds / 1000.0;
 				response_recorded[1] = 1;
-				log_printf(log, "First dispatch: process 2, workload = %d, " "response time = %.3f us\n", workloads[1], response_time[1]);
+				log_printf(log, "First dispatch: process 2, workload = %d, response time = %.3f us\n", workloads[1], response_time[1]);
 			}
 
 			kill(pid2, SIGCONT);
@@ -190,9 +194,11 @@ int main(int argc, char const *argv[])
 			// log if not already recorded
 			if (response_recorded[2] == 0) {
 				clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
-				response_time[2] = (dispatch_time.tv_sec - ready_time.tv_sec) * 1000000.0 + (dispatch_time.tv_nsec - ready_time.tv_nsec) / 1000.0;
+				double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
+				double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
+				response_time[2] = seconds * 1000000.0 + nanoseconds / 1000.0;
 				response_recorded[2] = 1;
-				log_printf(log, "First dispatch: process 3, workload = %d, " "response time = %.3f us\n", workloads[2], response_time[2]);
+				log_printf(log, "First dispatch: process 3, workload = %d, response time = %.3f us\n", workloads[2], response_time[2]);
 			}
 
 			kill(pid3, SIGCONT);
@@ -204,9 +210,11 @@ int main(int argc, char const *argv[])
 			// log if not already recorded
 			if (response_recorded[3] == 0) {
 				clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
-				response_time[3] = (dispatch_time.tv_sec - ready_time.tv_sec) * 1000000.0 + (dispatch_time.tv_nsec - ready_time.tv_nsec) / 1000.0;
+				double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
+				double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
+				response_time[3] = seconds * 1000000.0 + nanoseconds / 1000.0;
 				response_recorded[3] = 1;
-				log_printf(log, "First dispatch: process 4, workload = %d, " "response time = %.3f us\n", workloads[3], response_time[3]);
+				log_printf(log, "First dispatch: process 4, workload = %d, response time = %.3f us\n", workloads[3], response_time[3]);
 			}
 
 			kill(pid4, SIGCONT);

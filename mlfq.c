@@ -11,6 +11,7 @@
 
 // include my mlfq case for logging
 #define CASE "mlfq"
+#define QUANTUM 1000
 
 /************************************************************************************************ 
 		These DEFINE statements represent the workload size of each task and 
@@ -128,58 +129,106 @@ int main(int argc, char const *argv[])
 		to be implemented.
 	************************************************************************************************/
 
-    // Logging code setup (reused from PA1)
 	FILE *log = fopen(CASE ".log", "w");
 
-    if (log == NULL)
-    {
-        perror("fopen");
-        return 1;
-    }
-    log_printf(log, "STARTING %s\n", CASE);
+	if (log == NULL)
+	{
+		perror("fopen");
+		return 1;
+	}
 
-    // Initialize process IDs and workloads
-    pid_t pids[4] = {pid1, pid2, pid3, pid4};
+	log_printf(log, "STARTING %s\n", CASE);
 
-    int workloads[4] = {WORKLOAD1, WORKLOAD2, WORKLOAD3, WORKLOAD4};
-    double response_time[4];
-    int completed = 0;
-    double total_response_time = 0.0;
+	pid_t pids[4] = {pid1, pid2, pid3, pid4};
+	int workloads[4] = {WORKLOAD1, WORKLOAD2, WORKLOAD3, WORKLOAD4};
+	int finished[4] = {0, 0, 0, 0};
+	int queue2[4] = {0, 0, 0, 0}; // tracks if proc should go to queue 2
+	double response_time[4] = {0.0, 0.0, 0.0, 0.0};
+	int response_recorded[4] = {0, 0, 0, 0};
 
-    struct timespec ready_time;
-    struct timespec dispatch_time;
+	struct timespec ready_time;
+	struct timespec dispatch_time;
 
-    clock_gettime(CLOCK_MONOTONIC, &ready_time);
+	clock_gettime(CLOCK_MONOTONIC, &ready_time);
 
-    // schedule all 4 procs w/ mlfq
-    while (completed < 4) {
-        int status;
-        
-        // Calculate response time in us
-        clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
-        double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
-        double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
-        response_time[completed] = seconds * 1000000.0 + nanoseconds / 1000.0;
+	// QUEUE 1: Round robin scheduling
+	for (int i = 0; i < 4; i++) {
+		int status;
 
-        log_printf(log, "Dispatching process %d, workload = %d, response time = %.3f us\n", completed + 1, workloads[completed], response_time[completed]);
+		if (finished[i] == 1) {
+			continue;
+		}
 
-        kill(pids[completed], SIGCONT); // resume proc
-        waitpid(pids[completed], &status, 0); // wait for proc
+		// record response time on first dispatch
+		if (response_recorded[i] == 0) {
+			clock_gettime(CLOCK_MONOTONIC, &dispatch_time);
 
-        total_response_time += response_time[completed];
-        completed++;
-    }
+			double seconds = (double)(dispatch_time.tv_sec - ready_time.tv_sec);
+			double nanoseconds = (double)(dispatch_time.tv_nsec - ready_time.tv_nsec);
+			response_time[i] = seconds * 1000000.0 + nanoseconds / 1000.0;
+			response_recorded[i] = 1;
 
-    double average_response_time = total_response_time / 4.0;
-    log_printf(log, "\nMLFQ response times:\n");
+			log_printf(log, "Queue 1 dispatch: process %d, workload = %d, response time = %.3f us\n", i + 1, workloads[i], response_time[i]);
+		}
 
-    for (int i = 0; i < 4; i++) {
-        log_printf(log, "Process %d, workload = %d: %.3f microseconds\n", i + 1, workloads[i], response_time[i]);
-    }
+		// run process for quantum
+		kill(pids[i], SIGCONT);
+		usleep(QUANTUM);
+		kill(pids[i], SIGSTOP);
 
-    log_printf(log, "Average response time: %.3f microseconds\n", average_response_time);
-    log_printf(log, "FINISHED %s\n", CASE);
-    fclose(log);
+		// Check whether the process finished during its quantum
+		pid_t result = waitpid(pids[i], &status, WNOHANG);
+
+		if (result == pids[i]) {
+			finished[i] = 1;
+			log_printf(log, "Process %d finished in Queue 1\n", i + 1);
+		}
+		else if (result == 0) {
+			// move unfinished process to queue 2
+			queue2[i] = 1;
+
+			log_printf(log, "Process %d moved to Queue 2\n", i + 1);
+		}
+		else {
+			perror("waitpid");
+			return 1;
+		}
+	}
+
+	// QUEUE 2: FCFS scheduling
+	for (int i = 0; i < 4; i++) {
+		int status;
+
+		if (queue2[i] == 0 || finished[i] == 1) {
+			continue;
+		}
+
+		log_printf(log, "Queue 2 dispatch: process %d, workload = %d\n", i + 1, workloads[i]);
+
+		kill(pids[i], SIGCONT); // resume proc
+		waitpid(pids[i], &status, 0); // wait for proc
+
+		finished[i] = 1;
+	}
+
+	// final calculations
+	double total_response_time = 0.0;
+
+	for (int i = 0; i < 4; i++) {
+		total_response_time += response_time[i];
+	}
+
+	double average_response_time = total_response_time / 4.0;
+
+	log_printf(log, "\nMLFQ response times:\n");
+
+	for (int i = 0; i < 4; i++) {
+		log_printf(log, "Process %d, workload = %d: %.3f microseconds\n", i + 1, workloads[i], response_time[i]);
+	}
+
+	log_printf(log, "Average response time: %.3f microseconds\n", average_response_time);
+	log_printf(log, "FINISHED %s\n", CASE);
+	fclose(log);
 
 	/************************************************************************************************
 		- Scheduling code ends here
