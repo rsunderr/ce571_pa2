@@ -22,7 +22,7 @@
 #define WORKLOAD3 25000
 #define WORKLOAD4 10000
 
-#define QUANTUM 1000
+#define QUANTUM 4
 
 /************************************************************************************************ 
 					DO NOT CHANGE THE FUNCTION IMPLEMENTATION

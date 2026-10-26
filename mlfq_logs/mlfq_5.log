@@ -1,0 +1,21 @@
+STARTING mlfq
+Queue 1 dispatch: process 1, workload = 100000, response time = 0.000 us
+Process 1 moved to Queue 2
+Queue 1 dispatch: process 2, workload = 50000, response time = 83.000 us
+Process 2 moved to Queue 2
+Queue 1 dispatch: process 3, workload = 25000, response time = 153.000 us
+Process 3 moved to Queue 2
+Queue 1 dispatch: process 4, workload = 10000, response time = 240.000 us
+Process 4 moved to Queue 2
+Queue 2 dispatch: process 1, workload = 100000
+Queue 2 dispatch: process 2, workload = 50000
+Queue 2 dispatch: process 3, workload = 25000
+Queue 2 dispatch: process 4, workload = 10000
+
+MLFQ response times:
+Process 1, workload = 100000: 0.000 microseconds
+Process 2, workload = 50000: 83.000 microseconds
+Process 3, workload = 25000: 153.000 microseconds
+Process 4, workload = 10000: 240.000 microseconds
+Average response time: 119.000 microseconds
+FINISHED mlfq
