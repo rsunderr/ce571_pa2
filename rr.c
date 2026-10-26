@@ -22,10 +22,7 @@
 #define WORKLOAD3 25000
 #define WORKLOAD4 10000
 
-#define QUANTUM1 1000
-#define QUANTUM2 1000
-#define QUANTUM3 1000
-#define QUANTUM4 1000
+#define QUANTUM 3
 
 /************************************************************************************************ 
 					DO NOT CHANGE THE FUNCTION IMPLEMENTATION
@@ -170,7 +167,7 @@ int main(int argc, char const *argv[])
 			}
 
 			kill(pid1, SIGCONT);
-			usleep(QUANTUM1);
+			usleep(QUANTUM);
 			kill(pid1, SIGSTOP);
 		}
 
@@ -186,7 +183,7 @@ int main(int argc, char const *argv[])
 			}
 
 			kill(pid2, SIGCONT);
-			usleep(QUANTUM2);
+			usleep(QUANTUM);
 			kill(pid2, SIGSTOP);
 		}
 
@@ -202,7 +199,7 @@ int main(int argc, char const *argv[])
 			}
 
 			kill(pid3, SIGCONT);
-			usleep(QUANTUM3);
+			usleep(QUANTUM);
 			kill(pid3, SIGSTOP);
 		}
 
@@ -218,7 +215,7 @@ int main(int argc, char const *argv[])
 			}
 
 			kill(pid4, SIGCONT);
-			usleep(QUANTUM4);
+			usleep(QUANTUM);
 			kill(pid4, SIGSTOP);
 		}
 

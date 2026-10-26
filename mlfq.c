@@ -11,7 +11,6 @@
 
 // include my mlfq case for logging
 #define CASE "mlfq"
-#define QUANTUM 1000
 
 /************************************************************************************************ 
 		These DEFINE statements represent the workload size of each task and 
@@ -23,10 +22,7 @@
 #define WORKLOAD3 25000
 #define WORKLOAD4 10000
 
-#define QUANTUM1 1000
-#define QUANTUM2 1000
-#define QUANTUM3 1000
-#define QUANTUM4 1000
+#define QUANTUM 1000
 
 /************************************************************************************************ 
 					DO NOT CHANGE THE FUNCTION IMPLEMENTATION

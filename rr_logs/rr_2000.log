@@ -1,0 +1,13 @@
+STARTING rr
+First dispatch: process 1, workload = 100000, response time = 0.000 us
+First dispatch: process 2, workload = 50000, response time = 2595.000 us
+First dispatch: process 3, workload = 25000, response time = 5174.000 us
+First dispatch: process 4, workload = 10000, response time = 7718.000 us
+
+Round Robin response times:
+Process 1, workload = 100000: 0.000 microseconds
+Process 2, workload = 50000: 2595.000 microseconds
+Process 3, workload = 25000: 5174.000 microseconds
+Process 4, workload = 10000: 7718.000 microseconds
+Average response time: 3871.750 microseconds
+FINISHED rr
