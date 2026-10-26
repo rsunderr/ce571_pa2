@@ -1,0 +1,13 @@
+STARTING sjf
+Dispatching process 4, workload = 10000, response time = 0.000 us
+Dispatching process 3, workload = 25000, response time = 27320.000 us
+Dispatching process 2, workload = 50000, response time = 117456.000 us
+Dispatching process 1, workload = 100000, response time = 438291.000 us
+
+SJF response times:
+Process 1, workload = 100000: 438291.000 microseconds
+Process 2, workload = 50000: 117456.000 microseconds
+Process 3, workload = 25000: 27320.000 microseconds
+Process 4, workload = 10000: 0.000 microseconds
+Average response time: 145766.750 microseconds
+FINISHED sjf
